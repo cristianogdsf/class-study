@@ -29,9 +29,9 @@ export default class User {
             Cargo: ${this.role}`);
     }
     exibirListaCursos(){
-        console.log('Cursos:');
+        console.log('Cursos  -  Vagas');
         for(let i = 0; i < Cursos.length; i++){
-            console.log(`${i+1}. ${Cursos[i].curso}`);
+            console.log(`${i+1}. ${Cursos[i].curso} - ${Cursos[i].vagas}`);
         }
         
     }
@@ -56,5 +56,3 @@ export default class User {
 }
 
 const novoAluno = new User('Juliana', 'j@j.com', '2024-01-01');
-
-novoAluno.apagarPerfil()
