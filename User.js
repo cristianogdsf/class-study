@@ -1,4 +1,5 @@
 import { Cursos } from "./Cursos.js";
+const alunos = []
 
 export default class User {
     constructor(nome, email, nascimento, role, ativo = true){
@@ -10,16 +11,29 @@ export default class User {
         this.cursosMatriculados = [];
     }
     criarPerfil(){
-        return this.nome !== null ? console.log('Perfil Criado.') :
-        console.log('Favor, insira os dados para criar o perfil.');
+        if (!alunos.find(aluno => aluno.nome === this.nome && aluno.nascimento === this.nascimento)){
+            alunos.push({
+                id: alunos.length +1,
+                nome: this.nome,
+                email: this.email,
+                nascimento: this.nascimento,
+                role: this.role || 'estudante',
+                ativo: this.ativo,
+                cursosMatriculados: [],
+            });
+            console.log('Perfil Criado.')
+        } else {
+            console.log('Você já tem um perfil criado.');
+        }
     }
     apagarPerfil(){
-        this.nome = null;
-        this.email = null;
-        this.nascimento = null;
-        this.role = null;
-        this.ativo = null;
-        console.log('Perfil apagado.');
+        if (alunos.find(aluno => aluno.nome === this.nome && aluno.nascimento === this.nascimento)){
+            const indexAluno = alunos.findIndex(aluno => aluno.nome === this.nome && aluno.nascimento === this.nascimento);
+            delete alunos[indexAluno];
+            console.log('Perfil apagado.');
+        } else {
+            console.log('Você ainda não tem um perfil criado.');
+        }
     }
     exibirInfos(){
         console.log(`Seus dados:
@@ -33,15 +47,16 @@ export default class User {
         for(let i = 0; i < Cursos.length; i++){
             console.log(`${i+1}. ${Cursos[i].curso} - ${Cursos[i].vagas}`);
         }
-        
     }
     matricularEmCurso(nomeCurso){
-        const procuraCursoNaLista = Cursos.find(curso => curso.curso === nomeCurso);
-        if(!this.cursosMatriculados.includes(nomeCurso) && procuraCursoNaLista && procuraCursoNaLista.vagas > 0){
-            procuraCursoNaLista.vagas -= 1;
-            this.cursosMatriculados.push(nomeCurso);
-            console.log(`Matriculado no curso de ${nomeCurso}`);
-        } else {
+        const aluno = alunos.find(aluno => aluno.nome === this.nome && aluno.nascimento === this.nascimento);
+        if (aluno){
+            const procuraCursoNaLista = Cursos.find(curso => curso.curso === nomeCurso);
+            if(!aluno.cursosMatriculados.includes(nomeCurso) && procuraCursoNaLista && procuraCursoNaLista.vagas > 0){
+                procuraCursoNaLista.vagas -= 1;
+                this.cursosMatriculados.push(nomeCurso);
+                console.log(`Matriculado no curso de ${nomeCurso}`);
+        }} else {
             console.log('Não foi possível se cadastrar neste curso. Verifique se o curso está disponível');
         }
     }
@@ -56,3 +71,9 @@ export default class User {
 }
 
 const novoAluno = new User('Juliana', 'j@j.com', '2024-01-01');
+const segundoAluno = new User('Lulinha', 'l@l.com', '2020-04-07');
+novoAluno.criarPerfil()
+console.log(alunos);
+novoAluno.criarPerfil()
+novoAluno.apagarPerfil()
+console.log(alunos);
