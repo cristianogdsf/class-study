@@ -1,7 +1,7 @@
 import { Cursos } from "./Cursos.js";
-const alunos = []
+export const alunos = []
 
-export default class User {
+export class User {
     constructor(nome, email, nascimento, role, ativo = true){
         this.nome = nome;
         this.email = email;
@@ -32,7 +32,7 @@ export default class User {
             delete alunos[indexAluno];
             console.log('Perfil apagado.');
         } else {
-            console.log('Você ainda não tem um perfil criado.');
+            console.log('Você ainda não tem um perfil.');
         }
     }
     exibirInfos(){
@@ -49,21 +49,24 @@ export default class User {
         }
     }
     matricularEmCurso(nomeCurso){
-        const aluno = alunos.find(aluno => aluno.nome === this.nome && aluno.nascimento === this.nascimento);
+        const aluno = alunos.find(aluno => aluno.nome === this.nome && aluno.nascimento === this.nascimento);        
         if (aluno){
-            const procuraCursoNaLista = Cursos.find(curso => curso.curso === nomeCurso);
-            if(!aluno.cursosMatriculados.includes(nomeCurso) && procuraCursoNaLista && procuraCursoNaLista.vagas > 0){
-                procuraCursoNaLista.vagas -= 1;
-                this.cursosMatriculados.push(nomeCurso);
+            const cursoProcurado = Cursos.find(curso => curso.curso === nomeCurso.toLowerCase());       
+            if(cursoProcurado && cursoProcurado.vagas > 0 && !aluno.cursosMatriculados.includes(nomeCurso.toLowerCase())){
+                aluno.cursosMatriculados.push(nomeCurso.toLowerCase());
                 console.log(`Matriculado no curso de ${nomeCurso}`);
-        }} else {
+                cursoProcurado.vagas -= 1;
+        } else {
             console.log('Não foi possível se cadastrar neste curso. Verifique se o curso está disponível');
-        }
+        }} else {
+            console.log('Verifique se você já tem perfil criado.');
+        } 
     }
     exibirCursosMatriculados(){
-        if (!this.cursosMatriculados == ''){
+        const aluno = alunos.find(aluno => aluno.nome === this.nome && aluno.nascimento === this.nascimento);
+        if (!aluno.cursosMatriculados == ''){
             console.log('Matriculado nos cursos:');
-            this.cursosMatriculados.forEach((curso) => console.log(curso));
+            aluno.cursosMatriculados.forEach((curso) => console.log(curso));
         } else {
             console.log('Não há mátriculas.');
         }  
@@ -73,7 +76,4 @@ export default class User {
 const novoAluno = new User('Juliana', 'j@j.com', '2024-01-01');
 const segundoAluno = new User('Lulinha', 'l@l.com', '2020-04-07');
 novoAluno.criarPerfil()
-console.log(alunos);
-novoAluno.criarPerfil()
-novoAluno.apagarPerfil()
-console.log(alunos);
+novoAluno.matricularEmCurso('Python');
