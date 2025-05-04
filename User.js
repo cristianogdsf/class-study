@@ -8,7 +8,6 @@ export class User {
         this.nascimento = nascimento;
         this.role = role || 'estudante';
         this.ativo = ativo;
-        this.cursosMatriculados = [];
     }
     criarPerfil(){
         if (!alunos.find(aluno => aluno.nome === this.nome && aluno.nascimento === this.nascimento)){
@@ -77,3 +76,5 @@ const novoAluno = new User('Juliana', 'j@j.com', '2024-01-01');
 const segundoAluno = new User('Lulinha', 'l@l.com', '2020-04-07');
 novoAluno.criarPerfil()
 novoAluno.matricularEmCurso('Python');
+segundoAluno.criarPerfil();
+segundoAluno.matricularEmCurso('javascript')

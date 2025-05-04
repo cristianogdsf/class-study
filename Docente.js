@@ -1,6 +1,6 @@
-import User from "./User.js";
+import { User } from "./User.js";
 import { alunos } from "./User.js";
-const docentes = [];
+export const docentes = [];
 
 class Docente extends User {
     constructor(nome, email, nascimento, role = 'docente', ativo = true){
@@ -31,3 +31,8 @@ class Docente extends User {
         
     }
 }
+
+const novoDocente = new Docente('Tatinha', 't@t.com', '2000-02-07');
+novoDocente.criarPerfil();
+const segundoDocente = new Docente('Augusto', 'a@a.com', '1970-07-06');
+segundoDocente.criarPerfil();
